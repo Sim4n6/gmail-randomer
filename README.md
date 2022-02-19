@@ -2,7 +2,7 @@
 
 Pick a random message from Gmail inbox or from a provided search query.
 
-# Set up environment 
+# Set up of the environment 
 
 ```
 cd gmail-randomer/
@@ -11,4 +11,7 @@ pipenv install
 python3 gmail-randomer.py
 ```
 
+# Usage
+
 ![](gmail-random.png)
+
