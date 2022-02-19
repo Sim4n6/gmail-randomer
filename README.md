@@ -1,5 +1,6 @@
-# gmail-randomer
-Pick a random message from Gmail inbox.
+# Gmail-randomer
+
+Pick a random message from Gmail inbox or from a provided search query.
 
 # Set up environment 
 
