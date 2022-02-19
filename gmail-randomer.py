@@ -90,7 +90,7 @@ def main(args):
         grid = Table.grid(expand=True)
         grid.add_column(justify="left", ratio=1)
         grid.add_column(justify="left")
-        grid.add_row("[white]-[/] [yellow]From[/]: ", f"{email_from}")
+        grid.add_row("[white]-[/] [yellow]From[/]: ", f"[green]{email_from}[/]")
         grid.add_row("[white]-[/] [yellow]Subject[/]: ", f"{subject}")
         grid.add_row("[white]-[/] [yellow]Access[/]: ", f"{URL_msg}")
         console.print(Panel.fit(grid, title="[yellow]Random Message ![/]"))
