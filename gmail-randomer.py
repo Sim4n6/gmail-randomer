@@ -67,33 +67,39 @@ def main(args):
         else:
             messages = search_messages(service, " ".join(args[1:]))
 
-        msg = random.choice(messages)
-        content = (
-            service.users()
-            .messages()
-            .get(userId="me", id=msg["id"], format="full")
-            .execute()
-        )
-        #print(content)
+        if len(messages) > 0:
+            msg = random.choice(messages)
+            content = (
+                service.users()
+                .messages()
+                .get(userId="me", id=msg["id"], format="full")
+                .execute()
+            )
+            #print(content)
 
-        msg_id = content["id"]
-        URL_msg = f"https://mail.google.com/mail/u/0/#inbox/{msg_id}"
-        snippet = content["snippet"]
-        headers = content["payload"]["headers"]
-        subject = None
-        for header in headers:
-            if header["name"] == "Subject":
-                subject = header["value"]
-            if header["name"] == "From":
-                email_from = header["value"]
-        
-        grid = Table.grid(expand=True)
-        grid.add_column(justify="left", ratio=1)
-        grid.add_column(justify="left")
-        grid.add_row("[white]-[/] [yellow]From[/]: ", f"[green]{email_from}[/]")
-        grid.add_row("[white]-[/] [yellow]Subject[/]: ", f"{subject}")
-        grid.add_row("[white]-[/] [yellow]Access[/]: ", f"{URL_msg}")
-        console.print(Panel.fit(grid, title="[yellow]Random Message ![/]"))
+            msg_id = content["id"]
+            URL_msg = f"https://mail.google.com/mail/u/0/#inbox/{msg_id}"
+            snippet = content["snippet"]
+            headers = content["payload"]["headers"]
+            subject = None
+            for header in headers:
+                if header["name"] == "Subject":
+                    subject = header["value"]
+                if header["name"] == "From":
+                    email_from = header["value"]
+
+            grid = Table.grid(expand=True)
+            grid.add_column(justify="left", ratio=1)
+            grid.add_column(justify="left")
+            grid.add_row("[white]-[/] [yellow]From[/]: ", f"[green]{email_from}[/]")
+            grid.add_row("[white]-[/] [yellow]Subject[/]: ", f"{subject}")
+            grid.add_row("[white]-[/] [yellow]Access[/]: ", f"{URL_msg}")
+            console.print(Panel.fit(grid, title="[yellow]Random Message ![/]"))
+        else:
+            grid = Table.grid(expand=True)
+            grid.add_column(justify="left", ratio=1)
+            grid.add_row("[white]-[/] [yellow]No messages were found ![/]")
+            console.print(Panel.fit(grid, title="[yellow]No Message ![/]"))
 
     except HttpError as error:
         # TODO(developer) - Handle errors from gmail API.
