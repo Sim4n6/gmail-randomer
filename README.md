@@ -2,7 +2,7 @@
 
 Pick a random message from Gmail inbox or from a provided search query.
 
-# Set up of the environment 
+# Set up the environment 
 
 ```
 cd gmail-randomer/
