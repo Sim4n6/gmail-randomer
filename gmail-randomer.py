@@ -67,7 +67,8 @@ def main(args):
         else:
             messages = search_messages(service, " ".join(args[1:]))
 
-        if len(messages) > 0:
+        nbr_msgs = len(messages)
+        if nbr_msgs > 0:
             msg = random.choice(messages)
             content = (
                 service.users()
@@ -94,7 +95,7 @@ def main(args):
             grid.add_row("[white]-[/] [yellow]From[/]: ", f"[green]{email_from}[/]")
             grid.add_row("[white]-[/] [yellow]Subject[/]: ", f"{subject}")
             grid.add_row("[white]-[/] [yellow]Access[/]: ", f"{URL_msg}")
-            console.print(Panel.fit(grid, title="[yellow]Random Message ![/]"))
+            console.print(Panel.fit(grid, title=f"[yellow]Random Message from {nbr_msgs} messages.[/]"))
         else:
             grid = Table.grid(expand=True)
             grid.add_column(justify="left", ratio=1)
