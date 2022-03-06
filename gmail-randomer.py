@@ -95,7 +95,14 @@ def main(args):
             grid.add_row("[white]-[/] [yellow]From[/]: ", f"[green]{email_from}[/]")
             grid.add_row("[white]-[/] [yellow]Subject[/]: ", f"{subject}")
             grid.add_row("[white]-[/] [yellow]Access[/]: ", f"{URL_msg}")
-            console.print(Panel.fit(grid, title=f"[yellow]Random Message from {nbr_msgs} messages.[/]"))
+
+            unread = search_messages(service, "in:inbox is:unread")
+            if len(unread) > 0:
+                title = f"[yellow]Random message from {nbr_msgs} messages in inbox ({len(unread)} unread).[/]"
+            else:
+                title = f"[yellow]Random message from {nbr_msgs} messages in inbox.[/]"
+                
+            console.print(Panel.fit(grid, title=title))
         else:
             grid = Table.grid(expand=True)
             grid.add_column(justify="left", ratio=1)
