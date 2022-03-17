@@ -60,13 +60,23 @@ def main(args):
             token.write(creds.to_json())
 
     try:
-        # Call the Gmail API
+        # Call the Gmail API with or without args 
         service = build("gmail", "v1", credentials=creds)
         if len(args) == 1: 
             messages = search_messages(service, "in:inbox")
         else:
             messages = search_messages(service, " ".join(args[1:]))
 
+        # Check if unread messages are available in the inbox
+        unread = search_messages(service, "in:inbox is:unread")
+        URL_unread = "https://mail.google.com/mail/u/0/#search/is:unread+in:inbox"
+        if len(unread) > 0:
+            grid = Table.grid(expand=True)
+            grid.add_column(justify="left", ratio=1)
+            grid.add_row(f"[white]-[/] [yellow]Access:[/] {URL_unread}")
+            console.print(Panel.fit(grid, title=f"[yellow] Unread messages: {len(unread)} ![/]"))
+
+        # Count the number of available messages (all in the inbox)
         nbr_msgs = len(messages)
         if nbr_msgs > 0:
             msg = random.choice(messages)
@@ -96,13 +106,9 @@ def main(args):
             grid.add_row("[white]-[/] [yellow]Subject[/]: ", f"{subject}")
             grid.add_row("[white]-[/] [yellow]Access[/]: ", f"{URL_msg}")
 
-            unread = search_messages(service, "in:inbox is:unread")
-            if len(unread) > 0:
-                title = f"[yellow]Random message from {nbr_msgs} messages in inbox ({len(unread)} unread).[/]"
-            else:
-                title = f"[yellow]Random message from {nbr_msgs} messages in inbox.[/]"
-                
+            title = f"[yellow] Random message from {nbr_msgs} messages in inbox.[/]"                
             console.print(Panel.fit(grid, title=title))
+            
         else:
             grid = Table.grid(expand=True)
             grid.add_column(justify="left", ratio=1)
